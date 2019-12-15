@@ -1,5 +1,20 @@
 import React from 'react';
 
-const NotFoundPage = () => <div>TODO: NotFoundPage</div>;
+import { browserHistoryPropType } from '../models/propTypes/routerPropTypes';
+
+import Header from '../components/Header';
+
+const NotFoundPage = ({ history }) => {
+  return (
+    <>
+      <Header history={history} />
+      <div>TODO: NotFoundPage</div>
+    </>
+  );
+};
+
+NotFoundPage.propTypes = {
+  history: browserHistoryPropType.isRequired
+};
 
 export default NotFoundPage;
