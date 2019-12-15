@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import App from '../App';
-import HomePage from '../HomePage';
-import SearchPage from '../SearchPage';
-import NotFoundPage from '../NotFoundPage';
+import HomePage from '../containers/HomePage';
+import SearchPage from '../containers/SearchPage';
+import NotFoundPage from '../containers/NotFoundPage';
 
 describe('App', () => {
   it('should render an instance of BrowserRouter and a Switch', () => {

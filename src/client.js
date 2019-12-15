@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './app/containers/App';
+import App from './app/App';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 
-import HomePage from './HomePage';
-import SearchPage from './SearchPage';
-import NotFoundPage from './NotFoundPage';
+import HomePage from './containers/HomePage';
+import SearchPage from './containers/SearchPage';
+import NotFoundPage from './containers/NotFoundPage';
 
 const App = () => (
   <BrowserRouter>
