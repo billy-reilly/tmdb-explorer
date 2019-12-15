@@ -25,11 +25,11 @@ describe('<SearchBar />', () => {
     expect(input.prop('value')).toBe('');
   });
 
-  it('should render a submit button', () => {
+  it('should render a submit button with an svg icon', () => {
     const wrapper = renderSearchBar();
     const button = wrapper.find('button');
     expect(button.length).toBe(1);
-    expect(button.text()).toBe('Search');
+    expect(button.children().is('svg')).toBe(true);
   });
 
   describe('@events', () => {
