@@ -58,18 +58,27 @@ describe('<SearchBar />', () => {
       });
 
       describe('if there is a search term in the input field', () => {
-        it('should redirect to the search page with the search term as a query parameter', () => {
-          const mockPush = jest.fn();
-          const wrapper = shallow(<SearchBar history={{ push: mockPush }} />);
-          expect(wrapper.find('input').prop('value')).toBe('');
-          wrapper
-            .find('input')
-            .simulate('change', { target: { value: 'Jumanji' } });
-          expect(wrapper.find('input').prop('value')).toBe('Jumanji');
+        describe('and the search term is different to the current location query', () => {
+          it('should redirect to the search page with the search term as a query parameter', () => {
+            const mockPush = jest.fn();
+            const wrapper = shallow(<SearchBar history={{ push: mockPush }} />);
+            expect(wrapper.find('input').prop('value')).toBe('');
+            wrapper
+              .find('input')
+              .simulate('change', { target: { value: 'Jumanji' } });
+            expect(wrapper.find('input').prop('value')).toBe('Jumanji');
 
-          expect(mockPush).not.toHaveBeenCalled();
-          wrapper.find('form').simulate('submit', { preventDefault: () => {} });
-          expect(mockPush).toHaveBeenCalled();
+            expect(mockPush).not.toHaveBeenCalled();
+            wrapper
+              .find('form')
+              .simulate('submit', { preventDefault: () => {} });
+            expect(mockPush).toHaveBeenCalled();
+          });
+        });
+
+        describe('but the search term matches the current location query value', () => {
+          // TODO:
+          // it('should not push onto the history', () => {})
         });
       });
     });
