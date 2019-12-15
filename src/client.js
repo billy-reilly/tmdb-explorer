@@ -1,6 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
+/* eslint-disable react/jsx-filename-extension */
 
-import App from "./app/containers/App";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import App from './app/containers/App';
+
+ReactDOM.render(<App />, document.getElementById('root'));

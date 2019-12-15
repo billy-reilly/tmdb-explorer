@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const App = () => <div>I'm a React app!!</div>;
 
