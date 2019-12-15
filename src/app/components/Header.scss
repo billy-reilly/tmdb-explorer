@@ -1,0 +1,48 @@
+$maxMobileWidth: 576px;
+$maxTabletWidth: 991px;
+
+$backgroundColor: #081c24;
+$primaryColor: #01d277;
+
+$verticalMargin: 1rem;
+
+.Header {
+  background-color: $backgroundColor;
+  color: $primaryColor;
+
+  &__content-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media (max-width: $maxTabletWidth) {
+      padding: 0 30px;
+    }
+
+    @media (max-width: $maxMobileWidth) {
+      flex-direction: column;
+    }
+  }
+
+  &__heading-wrapper,
+  &__search-bar-wrapper {
+    display: inline-block;
+  }
+
+  &__search-bar-wrapper {
+    @media (max-width: $maxMobileWidth) {
+      margin-bottom: $verticalMargin;
+    }
+  }
+
+  &__heading-link {
+    text-decoration: none;
+    color: $primaryColor;
+  }
+
+  &__heading {
+    margin: $verticalMargin 0;
+  }
+}

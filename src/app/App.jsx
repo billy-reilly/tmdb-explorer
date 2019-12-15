@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 
+import './globalStyles.scss';
+
 import HomePage from './containers/HomePage';
 import SearchPage from './containers/SearchPage';
 import NotFoundPage from './containers/NotFoundPage';
