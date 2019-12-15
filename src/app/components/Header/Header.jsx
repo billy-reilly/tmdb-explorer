@@ -2,9 +2,9 @@ import React from 'react';
 
 import './Header.scss';
 
-import { browserHistoryPropType } from '../models/propTypes/routerPropTypes';
+import { browserHistoryPropType } from '../../models/propTypes/routerPropTypes';
 
-import SearchBar from './SearchBar';
+import SearchBar from '../SearchBar/SearchBar';
 
 const Header = ({ history }) => {
   return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './SearchBar.scss';
 
-import { browserHistoryPropType } from '../models/propTypes/routerPropTypes';
+import { browserHistoryPropType } from '../../models/propTypes/routerPropTypes';
 
 const MagnifyingGlassSVG = () => (
   <svg

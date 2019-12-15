@@ -2,7 +2,7 @@ import React from 'react';
 
 import { browserHistoryPropType } from '../models/propTypes/routerPropTypes';
 
-import Header from '../components/Header';
+import Header from '../components/Header/Header';
 
 const NotFoundPage = ({ history }) => {
   return (
