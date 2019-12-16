@@ -15,21 +15,21 @@ export default class SearchPage extends React.Component {
       currentSearchTerm: '',
       isLoading: false,
       searchResults: [],
-      totalResults: 0
+      totalResults: 0,
+      page: 0
       // TODO: error state
     };
 
-    this.fetchSearchResults = this.fetchSearchResults.bind(this);
-    this.renderPageContent = this.renderPageContent.bind(this);
+    this.fetchMoreResults = this.fetchMoreResults.bind(this);
   }
 
   componentDidMount() {
-    this.fetchSearchResults();
+    this.fetchFirstPageOfResults();
   }
 
   componentDidUpdate(prevProps) {
     if (this.getSearchQuery(prevProps) !== this.getSearchQuery(this.props)) {
-      this.fetchSearchResults();
+      this.fetchFirstPageOfResults();
     }
   }
 
@@ -37,30 +37,49 @@ export default class SearchPage extends React.Component {
     return getQueryParameter(props.location.search, 'q');
   }
 
-  fetchSearchResults() {
+  fetchSearchResults(currentSearchTerm, page) {
+    const { searchResults: previousResults } = this.state;
+
+    this.setState({ isLoading: true });
+
+    const { TMDB_API_KEY } = process.env;
+
+    axios
+      .get(
+        `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${currentSearchTerm}&page=${page}`
+      )
+      .then(res => {
+        const searchResults =
+          page > 1
+            ? previousResults.concat(res.data.results)
+            : res.data.results;
+        this.setState({
+          searchResults,
+          totalResults: res.data.total_results,
+          isLoading: false,
+          page
+        });
+      })
+      .catch(() => {
+        // TODO error handling
+      });
+  }
+
+  fetchFirstPageOfResults() {
     const searchQuery = this.getSearchQuery();
     if (searchQuery) {
       this.setState({
-        currentSearchTerm: searchQuery,
-        isLoading: true
+        currentSearchTerm: searchQuery
       });
 
-      const { TMDB_API_KEY } = process.env;
+      this.fetchSearchResults(searchQuery, 1);
+    }
+  }
 
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${searchQuery}`
-        )
-        .then(res => {
-          this.setState({
-            searchResults: res.data.results,
-            totalResults: res.data.total_results,
-            isLoading: false
-          });
-        })
-        .catch(() => {
-          // TODO error handling
-        });
+  fetchMoreResults() {
+    const { searchResults, totalResults, currentSearchTerm, page } = this.state;
+    if (searchResults.length < totalResults) {
+      this.fetchSearchResults(currentSearchTerm, page + 1);
     }
   }
 
@@ -76,6 +95,7 @@ export default class SearchPage extends React.Component {
         currentSearchTerm={this.state.currentSearchTerm}
         searchResults={this.state.searchResults}
         totalResults={this.state.totalResults}
+        onLoadMoreClick={this.fetchMoreResults}
       />
     );
   }

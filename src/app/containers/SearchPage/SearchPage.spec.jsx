@@ -24,9 +24,9 @@ const defaultProps = {
   history: fakeHistory
 };
 const fakeResults = [
-  { title: 'Harry Potter 1' },
-  { title: 'Harry Potter 2' },
-  { title: 'Harry Potter 3' }
+  { id: 123, title: 'Harry Potter 1' },
+  { id: 456, title: 'Harry Potter 2' },
+  { id: 789, title: 'Harry Potter 3' }
 ];
 
 describe('<SearchPage />', () => {
@@ -66,7 +66,7 @@ describe('<SearchPage />', () => {
         get.mockResolvedValue({});
         shallow(<SearchPage {...defaultProps} />);
         expect(get).toHaveBeenCalledWith(
-          'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=harry'
+          'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=harry&page=1'
         );
       });
 
@@ -81,7 +81,9 @@ describe('<SearchPage />', () => {
 
       describe('if the request is successful', () => {
         it('should render the search results', done => {
-          get.mockResolvedValue({ data: { results: fakeResults } });
+          get.mockResolvedValue({
+            data: { results: fakeResults, total_results: 100 }
+          });
           const wrapper = shallow(<SearchPage {...defaultProps} />);
           setTimeout(() => {
             expect(wrapper.find(Loader).exists()).toBe(false);
@@ -128,7 +130,7 @@ describe('<SearchPage />', () => {
         expect(get).toHaveBeenCalledTimes(2);
         expect(get).toHaveBeenNthCalledWith(
           2,
-          'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=batman'
+          'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=batman&page=1'
         );
       });
     });
@@ -145,6 +147,28 @@ describe('<SearchPage />', () => {
           location: newLocation
         });
         expect(get).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('when at least one page has already been fetched and the user clicks "load more"', () => {
+    it('should make a request for the subsequent page', done => {
+      const wrapper = shallow(<SearchPage {...defaultProps} />, {
+        disableLifecycleMethods: true
+      });
+      wrapper.setState({
+        currentSearchTerm: 'harry',
+        searchResults: fakeResults,
+        totalResults: 1000,
+        page: 3
+      });
+      setTimeout(() => {
+        expect(get).not.toHaveBeenCalled();
+        wrapper.find(SearchResults).prop('onLoadMoreClick')();
+        expect(get).toHaveBeenCalledWith(
+          'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=harry&page=4'
+        );
+        done();
       });
     });
   });

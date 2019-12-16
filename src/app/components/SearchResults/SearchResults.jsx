@@ -5,7 +5,12 @@ import moviePropTypes from '../../models/propTypes/moviePropTypes';
 
 import Movie from '../Movie/Movie';
 
-const SearchResults = ({ currentSearchTerm, searchResults, totalResults }) => {
+const SearchResults = ({
+  currentSearchTerm,
+  searchResults,
+  totalResults,
+  onLoadMoreClick
+}) => {
   if (!searchResults || !searchResults.length) {
     return (
       <span>{`Sorry, we couldn't find any results for "${currentSearchTerm}"`}</span>
@@ -18,6 +23,11 @@ const SearchResults = ({ currentSearchTerm, searchResults, totalResults }) => {
       {searchResults.map(movie => (
         <Movie key={movie.id} {...movie} />
       ))}
+      {searchResults.length < totalResults && (
+        <button type="button" onClick={onLoadMoreClick}>
+          Load more movies
+        </button>
+      )}
     </>
   );
 };
@@ -25,7 +35,8 @@ const SearchResults = ({ currentSearchTerm, searchResults, totalResults }) => {
 SearchResults.propTypes = {
   currentSearchTerm: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.shape(moviePropTypes)).isRequired,
-  totalResults: PropTypes.number.isRequired
+  totalResults: PropTypes.number.isRequired,
+  onLoadMoreClick: PropTypes.func.isRequired
 };
 
 export default SearchResults;
