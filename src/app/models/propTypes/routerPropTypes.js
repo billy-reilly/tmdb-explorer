@@ -1,7 +1,14 @@
-/* eslint-disable import/prefer-default-export */
+import { shape, func, string, object } from 'prop-types';
 
-import { shape, func } from 'prop-types';
+export const locationPropType = shape({
+  hash: string.isRequired,
+  key: string,
+  pathname: string.isRequired,
+  search: string.isRequired,
+  state: object
+});
 
 export const browserHistoryPropType = shape({
-  push: func.isRequired
+  push: func.isRequired,
+  location: locationPropType
 });

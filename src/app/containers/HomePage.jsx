@@ -9,6 +9,7 @@ const HomePage = ({ history }) => {
     <>
       <Header history={history} />
       <div>TODO: Homepage</div>
+      {/* Also TODO: remove html tags from containers */}
     </>
   );
 };

@@ -9,6 +9,7 @@ const NotFoundPage = ({ history }) => {
     <>
       <Header history={history} />
       <div>TODO: NotFoundPage</div>
+      {/* Also TODO: remove html tags from containers */}
     </>
   );
 };
