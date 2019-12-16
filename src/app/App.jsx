@@ -4,9 +4,9 @@ import { hot } from 'react-hot-loader';
 
 import './globalStyles.scss';
 
-import HomePage from './containers/HomePage';
-import SearchPage from './containers/SearchPage';
-import NotFoundPage from './containers/NotFoundPage';
+import HomePage from './containers/HomePage/HomePage';
+import SearchPage from './containers/SearchPage/SearchPage';
+import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
 
 const App = () => (
   <BrowserRouter>

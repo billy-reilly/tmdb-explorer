@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import { get } from 'axios';
 
 import SearchPage from './SearchPage';
-import Header from '../components/Header/Header';
-import SearchResults from '../components/SearchResults/SearchResults';
-import Loader from '../components/Loader/Loader';
+import Header from '../../components/Header/Header';
+import SearchResults from '../../components/SearchResults/SearchResults';
+import Loader from '../../components/Loader/Loader';
 
 jest.mock('axios');
 

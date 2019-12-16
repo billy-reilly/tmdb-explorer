@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 
-import { browserHistoryPropType } from '../models/propTypes/routerPropTypes';
-import { getQueryParameter } from '../helpers/queryHelpers';
+import { browserHistoryPropType } from '../../models/propTypes/routerPropTypes';
+import { getQueryParameter } from '../../helpers/queryHelpers';
 
-import Header from '../components/Header/Header';
-import SearchResults from '../components/SearchResults/SearchResults';
-import Loader from '../components/Loader/Loader';
+import Header from '../../components/Header/Header';
+import SearchResults from '../../components/SearchResults/SearchResults';
+import Loader from '../../components/Loader/Loader';
 
 export default class SearchPage extends React.Component {
   constructor(props) {
