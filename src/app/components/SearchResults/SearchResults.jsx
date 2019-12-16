@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './SearchResults.scss';
+
 import moviePropTypes from '../../models/propTypes/moviePropTypes';
 
 import Movie from '../Movie/Movie';
@@ -18,17 +20,21 @@ const SearchResults = ({
   }
 
   return (
-    <>
+    <div className="SearchResults container">
       <h2>{`Showing ${searchResults.length} of ${totalResults} TMDb results for "${currentSearchTerm}"`}</h2>
       {searchResults.map(movie => (
         <Movie key={movie.id} {...movie} />
       ))}
       {searchResults.length < totalResults && (
-        <button type="button" onClick={onLoadMoreClick}>
+        <button
+          className="SearchResults__load-more-button"
+          type="button"
+          onClick={onLoadMoreClick}
+        >
           Load more movies
         </button>
       )}
-    </>
+    </div>
   );
 };
 
