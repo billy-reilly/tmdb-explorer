@@ -14,7 +14,8 @@ export default class SearchPage extends React.Component {
     this.state = {
       currentSearchTerm: '',
       isLoading: false,
-      searchResults: []
+      searchResults: [],
+      totalResults: 0
       // TODO: error state
     };
 
@@ -51,7 +52,11 @@ export default class SearchPage extends React.Component {
           `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${searchQuery}`
         )
         .then(res => {
-          this.setState({ searchResults: res.data.results, isLoading: false });
+          this.setState({
+            searchResults: res.data.results,
+            totalResults: res.data.total_results,
+            isLoading: false
+          });
         })
         .catch(() => {
           // TODO error handling
@@ -70,6 +75,7 @@ export default class SearchPage extends React.Component {
       <SearchResults
         currentSearchTerm={this.state.currentSearchTerm}
         searchResults={this.state.searchResults}
+        totalResults={this.state.totalResults}
       />
     );
   }
