@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import moviePropTypes from '../../models/propTypes/moviePropTypes';
+
 import Movie from '../Movie/Movie';
 
 const SearchResults = ({ currentSearchTerm, searchResults, totalResults }) => {
@@ -14,7 +16,7 @@ const SearchResults = ({ currentSearchTerm, searchResults, totalResults }) => {
     <>
       <h2>{`Showing ${searchResults.length} of ${totalResults} TMDb results for "${currentSearchTerm}"`}</h2>
       {searchResults.map(movie => (
-        <Movie {...movie} />
+        <Movie key={movie.id} {...movie} />
       ))}
     </>
   );
@@ -22,11 +24,7 @@ const SearchResults = ({ currentSearchTerm, searchResults, totalResults }) => {
 
 SearchResults.propTypes = {
   currentSearchTerm: PropTypes.string.isRequired,
-  searchResults: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired
-    })
-  ).isRequired,
+  searchResults: PropTypes.arrayOf(PropTypes.shape(moviePropTypes)).isRequired,
   totalResults: PropTypes.number.isRequired
 };
 
