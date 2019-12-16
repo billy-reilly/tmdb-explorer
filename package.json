@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "parcel build src/index.html",
+    "deploy": "aws s3 sync dist/ s3://tmdb-explorer",
     "dev": "parcel src/index.html --open",
     "test:unit": "jest"
   },
