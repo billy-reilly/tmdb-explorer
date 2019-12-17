@@ -6,14 +6,16 @@ import './SearchResults.scss';
 import moviePropTypes from '../../models/propTypes/moviePropTypes';
 
 import Movie from '../Movie/Movie';
+import Loader from '../Loader/Loader';
 
 const SearchResults = ({
   currentSearchTerm,
   searchResults,
   totalResults,
-  onLoadMoreClick
+  onLoadMoreClick,
+  isLoading
 }) => {
-  if (!searchResults || !searchResults.length) {
+  if (!isLoading && !searchResults.length) {
     return (
       <span>{`Sorry, we couldn't find any results for "${currentSearchTerm}"`}</span>
     );
@@ -21,11 +23,17 @@ const SearchResults = ({
 
   return (
     <div className="SearchResults container">
-      <h2>{`Showing ${searchResults.length} of ${totalResults} TMDb results for "${currentSearchTerm}"`}</h2>
+      {!!searchResults.length && (
+        <h2>{`Showing ${searchResults.length} of ${totalResults} TMDb results for "${currentSearchTerm}"`}</h2>
+      )}
+
       {searchResults.map(movie => (
         <Movie key={movie.id} {...movie} />
       ))}
-      {searchResults.length < totalResults && (
+
+      {isLoading && <Loader />}
+
+      {!isLoading && searchResults.length < totalResults && (
         <button
           className="SearchResults__load-more-button"
           type="button"
@@ -42,7 +50,12 @@ SearchResults.propTypes = {
   currentSearchTerm: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.shape(moviePropTypes)).isRequired,
   totalResults: PropTypes.number.isRequired,
-  onLoadMoreClick: PropTypes.func.isRequired
+  onLoadMoreClick: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool
+};
+
+SearchResults.defaultProps = {
+  isLoading: false
 };
 
 export default SearchResults;

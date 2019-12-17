@@ -1,6 +1,9 @@
 .SearchResults {
   // TODO
+  padding-bottom: 50px;
+
   &__load-more-button {
+    margin: 15px 0;
     border: 1px solid black;
     border-radius: 3px;
   }

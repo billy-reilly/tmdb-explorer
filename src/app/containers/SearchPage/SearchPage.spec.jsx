@@ -5,7 +5,6 @@ import { get } from 'axios';
 import SearchPage from './SearchPage';
 import Header from '../../components/Header/Header';
 import SearchResults from '../../components/SearchResults/SearchResults';
-import Loader from '../../components/Loader/Loader';
 
 jest.mock('axios');
 
@@ -71,11 +70,10 @@ describe('<SearchPage />', () => {
       });
 
       describe('whilst the request is pending', () => {
-        it('should render a Loader in place of the SearchResults component', () => {
+        it('should pass down isLoading true the SearchResults component', () => {
           get.mockResolvedValue({});
           const wrapper = shallow(<SearchPage {...defaultProps} />);
-          expect(wrapper.find(Loader).exists()).toBe(true);
-          expect(wrapper.find(SearchResults).exists()).toBe(false);
+          expect(wrapper.find(SearchResults).prop('isLoading')).toBe(true);
         });
       });
 
@@ -86,12 +84,12 @@ describe('<SearchPage />', () => {
           });
           const wrapper = shallow(<SearchPage {...defaultProps} />);
           setTimeout(() => {
-            expect(wrapper.find(Loader).exists()).toBe(false);
             const resultsComp = wrapper.find(SearchResults);
             expect(resultsComp.exists()).toBe(true);
+            expect(resultsComp.prop('isLoading')).toBe(false);
             expect(resultsComp.prop('currentSearchTerm')).toBe('harry');
-            expect(resultsComp.prop('searchResults')).toBe(fakeResults);
-            expect();
+            expect(resultsComp.prop('searchResults')).toEqual(fakeResults);
+            expect(resultsComp.prop('totalResults')).toBe(100);
             done();
           });
         });
@@ -133,6 +131,47 @@ describe('<SearchPage />', () => {
           'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=batman&page=1'
         );
       });
+
+      describe('whilst the second request is pending', () => {
+        it('should delete any previously fetched results from state and display loading state', done => {
+          const fakeBatmanResults = [
+            { id: 123, title: 'Batman 1' },
+            { id: 456, title: 'Batman 2' },
+            { id: 789, title: 'Batman 3' }
+          ];
+
+          get.mockResolvedValueOnce({
+            data: { results: fakeResults, total_results: 100 }
+          });
+          get.mockResolvedValueOnce({
+            data: { results: fakeBatmanResults, total_results: 100 }
+          });
+
+          const wrapper = shallow(<SearchPage {...defaultProps} />);
+
+          setTimeout(() => {
+            expect(wrapper.find(SearchResults).prop('searchResults')).toEqual(
+              fakeResults
+            );
+            // now wrapper is in state where first set of results has been
+            // fetched and rendered
+
+            const newLocation = {
+              ...fakeLocation,
+              search: '?q=batman'
+            };
+            wrapper.setProps({
+              location: newLocation
+            });
+
+            expect(wrapper.find(SearchResults).prop('searchResults')).toEqual(
+              []
+            );
+            expect(wrapper.find(SearchResults).prop('isLoading')).toBe(true);
+            done();
+          });
+        });
+      });
     });
 
     describe('when the location search has not changed', () => {
@@ -152,23 +191,42 @@ describe('<SearchPage />', () => {
   });
 
   describe('when at least one page has already been fetched and the user clicks "load more"', () => {
-    it('should make a request for the subsequent page', done => {
+    const initialState = {
+      currentSearchTerm: 'harry',
+      searchResults: fakeResults,
+      totalResults: 1000,
+      page: 3
+    };
+
+    it('should make a request for the subsequent page', () => {
       const wrapper = shallow(<SearchPage {...defaultProps} />, {
         disableLifecycleMethods: true
       });
-      wrapper.setState({
-        currentSearchTerm: 'harry',
-        searchResults: fakeResults,
-        totalResults: 1000,
-        page: 3
-      });
-      setTimeout(() => {
-        expect(get).not.toHaveBeenCalled();
-        wrapper.find(SearchResults).prop('onLoadMoreClick')();
-        expect(get).toHaveBeenCalledWith(
-          'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=harry&page=4'
+      wrapper.setState(initialState);
+      expect(get).not.toHaveBeenCalled();
+      wrapper.find(SearchResults).prop('onLoadMoreClick')();
+      expect(get).toHaveBeenCalledWith(
+        'https://api.themoviedb.org/3/search/movie?api_key=FAKE_KEY&query=harry&page=4'
+      );
+    });
+
+    describe('whilst second request is pending', () => {
+      it('should pass down the search results that have already been fetched AND isLoading true', () => {
+        const wrapper = shallow(<SearchPage {...defaultProps} />, {
+          disableLifecycleMethods: true
+        });
+        wrapper.setState(initialState);
+        expect(wrapper.find(SearchResults).prop('searchResults')).toEqual(
+          fakeResults
         );
-        done();
+        expect(wrapper.find(SearchResults).prop('isLoading')).toBe(false);
+
+        wrapper.find(SearchResults).prop('onLoadMoreClick')();
+
+        expect(wrapper.find(SearchResults).prop('searchResults')).toEqual(
+          fakeResults
+        );
+        expect(wrapper.find(SearchResults).prop('isLoading')).toBe(true);
       });
     });
   });

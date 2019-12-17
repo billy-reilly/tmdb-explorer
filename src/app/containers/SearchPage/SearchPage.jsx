@@ -6,7 +6,6 @@ import { getQueryParameter } from '../../helpers/queryHelpers';
 
 import Header from '../../components/Header/Header';
 import SearchResults from '../../components/SearchResults/SearchResults';
-import Loader from '../../components/Loader/Loader';
 
 export default class SearchPage extends React.Component {
   constructor(props) {
@@ -38,7 +37,12 @@ export default class SearchPage extends React.Component {
   }
 
   fetchSearchResults(currentSearchTerm, page) {
-    const { searchResults: previousResults } = this.state;
+    let { searchResults } = this.state;
+
+    if (page === 1) {
+      searchResults = [];
+      this.setState({ searchResults });
+    }
 
     this.setState({ isLoading: true });
 
@@ -49,12 +53,8 @@ export default class SearchPage extends React.Component {
         `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${currentSearchTerm}&page=${page}`
       )
       .then(res => {
-        const searchResults =
-          page > 1
-            ? previousResults.concat(res.data.results)
-            : res.data.results;
         this.setState({
-          searchResults,
+          searchResults: searchResults.concat(res.data.results),
           totalResults: res.data.total_results,
           isLoading: false,
           page
@@ -84,10 +84,6 @@ export default class SearchPage extends React.Component {
   }
 
   renderPageContent() {
-    if (this.state.isLoading) {
-      return <Loader />;
-    }
-
     // TODO rendering for error state
 
     return (
@@ -96,6 +92,7 @@ export default class SearchPage extends React.Component {
         searchResults={this.state.searchResults}
         totalResults={this.state.totalResults}
         onLoadMoreClick={this.fetchMoreResults}
+        isLoading={this.state.isLoading}
       />
     );
   }
