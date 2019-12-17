@@ -33,7 +33,6 @@ $ npm run dev
 Here are some things I'd like to work on:
 
 ### Improvements on existing functionality
-- Do not hide the loaded products when fetching subsequent pages for the same search query (currently movies flash away and then reappear)
 - Improve cross browser compatibility with CSS - eg current flexbox grid approach in header will be buggy on IE
 - Style the search page
 
