@@ -1,3 +1,6 @@
+$maxMobileWidth: 576px;
+$maxTabletWidth: 991px;
+
 :root {
   font-size: 16px;
   font-family: Arial, sans-serif;
@@ -7,4 +10,8 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 50px;
+
+  @media (max-width: $maxTabletWidth) {
+    padding: 0 30px;
+  }
 }

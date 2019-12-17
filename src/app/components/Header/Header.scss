@@ -17,10 +17,6 @@ $verticalMargin: 1rem;
     align-items: center;
     flex-wrap: wrap;
 
-    @media (max-width: $maxTabletWidth) {
-      padding: 0 30px;
-    }
-
     @media (max-width: $maxMobileWidth) {
       flex-direction: column;
     }
