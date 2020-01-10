@@ -1,10 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import { browserHistoryPropType } from '../../models/propTypes/routerPropTypes';
 import { getQueryParameter } from '../../helpers/queryHelpers';
 
-import Header from '../../components/Header/Header';
 import SearchResults from '../../components/SearchResults/SearchResults';
 
 export default class SearchPage extends React.Component {
@@ -83,22 +81,14 @@ export default class SearchPage extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
     return (
-      <>
-        <Header history={history} />
-        <SearchResults
-          currentSearchTerm={this.state.currentSearchTerm}
-          searchResults={this.state.searchResults}
-          totalResults={this.state.totalResults}
-          onLoadMoreClick={this.fetchMoreResults}
-          isLoading={this.state.isLoading}
-        />
-      </>
+      <SearchResults
+        currentSearchTerm={this.state.currentSearchTerm}
+        searchResults={this.state.searchResults}
+        totalResults={this.state.totalResults}
+        onLoadMoreClick={this.fetchMoreResults}
+        isLoading={this.state.isLoading}
+      />
     );
   }
 }
-
-SearchPage.propTypes = {
-  history: browserHistoryPropType.isRequired
-};

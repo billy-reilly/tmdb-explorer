@@ -4,12 +4,14 @@ import { hot } from 'react-hot-loader';
 
 import './globalStyles.scss';
 
+import Header from './components/Header/Header';
 import HomePage from './containers/HomePage/HomePage';
 import SearchPage from './containers/SearchPage/SearchPage';
 import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
 
 const App = () => (
   <BrowserRouter>
+    <Header />
     <Switch>
       <Route exact path="/" component={HomePage} />
       <Route path="/search" component={SearchPage} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import './Header.scss';
 
@@ -27,4 +28,4 @@ Header.propTypes = {
   history: browserHistoryPropType.isRequired
 };
 
-export default Header;
+export default withRouter(Header);
