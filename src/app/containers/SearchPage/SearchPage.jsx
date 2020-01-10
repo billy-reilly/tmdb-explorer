@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import { locationPropType } from '../../models/propTypes/routerPropTypes';
+
 import { getQueryParameter } from '../../helpers/queryHelpers';
 
 import SearchResults from '../../components/SearchResults/SearchResults';
@@ -92,3 +94,7 @@ export default class SearchPage extends React.Component {
     );
   }
 }
+
+SearchPage.propTypes = {
+  location: locationPropType.isRequired // eslint-disable-line react/no-unused-prop-types
+};
