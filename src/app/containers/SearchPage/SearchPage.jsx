@@ -36,14 +36,11 @@ export default class SearchPage extends React.Component {
     return getQueryParameter(props.location.search, 'q');
   }
 
-  fetchSearchResults(currentSearchTerm, page) {
-    let { searchResults } = this.state;
-
-    if (page === 1) {
-      searchResults = [];
-      this.setState({ searchResults });
-    }
-
+  fetchSearchResults(
+    currentSearchTerm,
+    page,
+    existingSearchResults = this.state.searchResults
+  ) {
     this.setState({ isLoading: true });
 
     const { TMDB_API_KEY } = process.env;
@@ -54,7 +51,7 @@ export default class SearchPage extends React.Component {
       )
       .then(res => {
         this.setState({
-          searchResults: searchResults.concat(res.data.results),
+          searchResults: existingSearchResults.concat(res.data.results),
           totalResults: res.data.total_results,
           isLoading: false,
           page
@@ -68,11 +65,13 @@ export default class SearchPage extends React.Component {
   fetchFirstPageOfResults() {
     const searchQuery = this.getSearchQuery();
     if (searchQuery) {
+      const searchResults = [];
       this.setState({
-        currentSearchTerm: searchQuery
+        currentSearchTerm: searchQuery,
+        searchResults
       });
 
-      this.fetchSearchResults(searchQuery, 1);
+      this.fetchSearchResults(searchQuery, 1, searchResults);
     }
   }
 
@@ -83,26 +82,18 @@ export default class SearchPage extends React.Component {
     }
   }
 
-  renderPageContent() {
-    // TODO rendering for error state
-
-    return (
-      <SearchResults
-        currentSearchTerm={this.state.currentSearchTerm}
-        searchResults={this.state.searchResults}
-        totalResults={this.state.totalResults}
-        onLoadMoreClick={this.fetchMoreResults}
-        isLoading={this.state.isLoading}
-      />
-    );
-  }
-
   render() {
     const { history } = this.props;
     return (
       <>
         <Header history={history} />
-        {this.renderPageContent()}
+        <SearchResults
+          currentSearchTerm={this.state.currentSearchTerm}
+          searchResults={this.state.searchResults}
+          totalResults={this.state.totalResults}
+          onLoadMoreClick={this.fetchMoreResults}
+          isLoading={this.state.isLoading}
+        />
       </>
     );
   }
