@@ -1,14 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Header from './Header';
+import { UnwrappedHeader } from './Header';
 
 const requiredProps = {
   history: {
     push: () => {}
   }
 };
-const renderHeader = () => shallow(<Header {...requiredProps} />);
+const renderHeader = () => shallow(<UnwrappedHeader {...requiredProps} />);
 
 describe('<Header />', () => {
   it('should render a header tag', () => {

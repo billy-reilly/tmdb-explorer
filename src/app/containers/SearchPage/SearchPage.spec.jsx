@@ -45,12 +45,6 @@ describe('<SearchPage />', () => {
       disableLifecycleMethods: true
     });
 
-    it('should render the Header', () => {
-      const header = wrapper.find(Header);
-      expect(header.exists()).toBe(true);
-      expect(header.prop('history')).toBe(fakeHistory);
-    });
-
     it('should render the SearchResults component with initial state', () => {
       const resultsComp = wrapper.find(SearchResults);
       expect(resultsComp.exists()).toBe(true);

@@ -28,4 +28,6 @@ Header.propTypes = {
   history: browserHistoryPropType.isRequired
 };
 
+export const UnwrappedHeader = Header;
+
 export default withRouter(Header);
